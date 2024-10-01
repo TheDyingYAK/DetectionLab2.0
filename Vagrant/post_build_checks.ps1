@@ -30,10 +30,10 @@ function download {
 function post_build_checks {
     $checkmark = ([char]8730)
 
-    if ((Get-NetAdapter | where {$_.name -eq "VMware Network Adapter VMnet2"}).ifIndex) {
+    if ((Get-NetAdapter | where-object {$_.name -eq "VMware Network Adapter VMnet2"}).ifIndex) {
       Write-Host '[*] Verifying vmnet2 interface has its IP address set correctly'
-      $vmnet2idx=(Get-NetAdapter | where {$_.name -eq "VMware Network Adapter VMnet2"}).ifIndex
-      if ((get-netipaddress -AddressFamily IPv4 | where { $_.InterfaceIndex -eq $vmnet2idx }).IPAddress -ne "192.168.56.1") {
+      $vmnet2idx=(Get-NetAdapter | where-object {$_.name -eq "VMware Network Adapter VMnet2"}).ifIndex
+      if ((get-netipaddress -AddressFamily IPv4 | where-object { $_.InterfaceIndex -eq $vmnet2idx }).IPAddress -ne "192.168.56.1") {
         Write-Host '[!] Your vmnet2 network adapter is not set with a static IP address of 192.168.56.1' -ForegroundColor red
         Write-Host '[!] Please match your adapter settings to the screenshot shown here: https://github.com/clong/DetectionLab/issues/681#issuecomment-890442441' -ForegroundColor red
       }
